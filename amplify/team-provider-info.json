@@ -27,6 +27,12 @@
     "categories": {
       "auth": {
         "lexkendra": {}
+      },
+      "interactions": {
+        "lexfd7af2f2": {
+          "deploymentBucketName": "amplify-lexkendra-devops-182745-deployment",
+          "s3Key": "amplify-builds/lexfd7af2f2-7a4c6752784a43355250-build.zip"
+        }
       }
     }
   }
