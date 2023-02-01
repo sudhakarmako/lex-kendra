@@ -11,5 +11,23 @@
       "StackId": "arn:aws:cloudformation:us-east-1:639040537604:stack/amplify-lexkendra-dev-172846/cae3bba0-a227-11ed-8d30-12cc1b6777a1",
       "AmplifyAppId": "dl2ol4li8efvo"
     }
+  },
+  "devops": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lexkendra-devops-182745-authRole",
+      "UnauthRoleArn": "arn:aws:iam::980535566316:role/amplify-lexkendra-devops-182745-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::980535566316:role/amplify-lexkendra-devops-182745-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-lexkendra-devops-182745-deployment",
+      "UnauthRoleName": "amplify-lexkendra-devops-182745-unauthRole",
+      "StackName": "amplify-lexkendra-devops-182745",
+      "StackId": "arn:aws:cloudformation:us-east-1:980535566316:stack/amplify-lexkendra-devops-182745/08b31f40-a230-11ed-8672-0e8c805f8db9",
+      "AmplifyAppId": "dohrfz8r2m6ob"
+    },
+    "categories": {
+      "auth": {
+        "lexkendra": {}
+      }
+    }
   }
 }
