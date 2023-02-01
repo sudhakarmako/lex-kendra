@@ -3,14 +3,15 @@ import AWS from "aws-sdk";
 import { useRef, useState } from "react";
 import dayjs from "dayjs";
 import "./App.css";
+import { awsKey } from "./config";
 
-AWS.config.region = "us-east-1";
+AWS.config.region = awsKey.region;
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: "us-east-1:7ab79ccc-ea35-4fb3-a762-d18def96b951",
+  IdentityPoolId: awsKey.identityPoolId,
 });
 
 const lexruntime = new AWS.LexRuntime();
-const lexUserId = "lex-chatbot-demo" + Date.now();
+const lexUserId = awsKey.lexUserId + Date.now();
 
 function App() {
   const date = new Date();
@@ -20,7 +21,7 @@ function App() {
   const [conversation, setConversation] = useState([
     {
       message: "Welcome to lex bot",
-      by: "lex",
+      by: awsKey.by.lex,
       date: date.toISOString(),
     },
   ]);
@@ -36,8 +37,8 @@ function App() {
 
   const sendToLex = (inputText) => {
     var params = {
-      botAlias: "bootripkendra",
-      botName: "BookTrip",
+      botAlias: awsKey.botAlias,
+      botName: awsKey.botName,
       inputText,
       userId: lexUserId,
       sessionAttributes,
@@ -48,14 +49,14 @@ function App() {
         console.log(err, err.stack);
         pushConvesation({
           message: "Error:  " + err.message + " (see console for details)",
-          by: "lex",
+          by: awsKey.by.lex,
           date: date.toISOString(),
         });
       }
       setSessionAttributes(data.sessionAttributes);
       pushConvesation({
         message: data?.message,
-        by: "lex",
+        by: awsKey.by.lex,
         date: date.toISOString(),
       });
       scrollToBottom();
@@ -68,7 +69,7 @@ function App() {
     if (!messageEntered) return null;
     pushConvesation({
       message: messageEntered.trim(),
-      by: "user",
+      by: awsKey.by.user,
       date: date.toISOString(),
     });
     scrollToBottom();
@@ -76,8 +77,8 @@ function App() {
     setMessageEntered("");
   };
   const renderMessage = (message, type) => {
-    if (type === "user") return message;
-    if (type === "lex" && typeof message === "string") return message;
+    if (type === awsKey.by.user) return message;
+    if (type === awsKey.by.lex && typeof message === "string") return message;
     return JSON.stringify(message);
   };
 
@@ -93,7 +94,7 @@ function App() {
               <div
                 key={idx}
                 className={`chat-bubble ${
-                  by === "lex" ? "chat-left" : "chat-right"
+                  by === awsKey.by.lex ? "chat-left" : "chat-right"
                 }`}
               >
                 <p>{renderMessage(message, by)}</p>
