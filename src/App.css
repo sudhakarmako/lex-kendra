@@ -32,9 +32,10 @@
 }
 
 .chat-messages {
-  height: calc(80vh - 60px);
+  height: calc(70vh - 60px);
   overflow-y: scroll;
   scroll-behavior: smooth;
+  padding-bottom: 60px;
 }
 
 .chat-bubble {
@@ -47,12 +48,12 @@
 }
 .chat-bubble.chat-left {
   background-color: var(--primary);
-  border-bottom-left-radius: 0;
+  border-bottom-left-radius: 2px;
   color: white;
 }
 .chat-bubble.chat-right {
   background-color: var(--lightgray);
-  border-bottom-right-radius: 0;
+  border-bottom-right-radius: 2px;
   margin-left: auto;
 }
 .chat-bubble sub {

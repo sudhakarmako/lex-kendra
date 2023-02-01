@@ -1,19 +1,25 @@
+import AWS from "aws-sdk";
+
 import { useRef, useState } from "react";
 import dayjs from "dayjs";
 import "./App.css";
+
+AWS.config.region = "us-east-1";
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: "us-east-1:7ab79ccc-ea35-4fb3-a762-d18def96b951",
+});
+
+const lexruntime = new AWS.LexRuntime();
+const lexUserId = "lex-chatbot-demo" + Date.now();
 
 function App() {
   const date = new Date();
   const conversationWindow = useRef(null);
   const [messageEntered, setMessageEntered] = useState("");
+  const [sessionAttributes, setSessionAttributes] = useState({});
   const [conversation, setConversation] = useState([
     {
       message: "Welcome to lex bot",
-      by: "lex",
-      date: date.toISOString(),
-    },
-    {
-      message: "Please type your message..",
       by: "lex",
       date: date.toISOString(),
     },
@@ -21,21 +27,58 @@ function App() {
 
   const scrollToBottom = () => {
     conversationWindow.current.scrollTop =
-      conversationWindow.current.scrollHeight;
+      conversationWindow.current.scrollHeight + 300;
+  };
+
+  const pushConvesation = (convestation) => {
+    setConversation((prevState) => [...prevState, convestation]);
+  };
+
+  const sendToLex = (inputText) => {
+    var params = {
+      botAlias: "bootripkendra",
+      botName: "BookTrip",
+      inputText,
+      userId: lexUserId,
+      sessionAttributes,
+    };
+
+    lexruntime.postText(params, function (err, data) {
+      if (err) {
+        console.log(err, err.stack);
+        pushConvesation({
+          message: "Error:  " + err.message + " (see console for details)",
+          by: "lex",
+          date: date.toISOString(),
+        });
+      }
+      setSessionAttributes(data.sessionAttributes);
+      pushConvesation({
+        message: data?.message,
+        by: "lex",
+        date: date.toISOString(),
+      });
+      scrollToBottom();
+    });
+    return false;
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (!messageEntered) return null;
-
-    const message = {
+    pushConvesation({
       message: messageEntered.trim(),
       by: "user",
       date: date.toISOString(),
-    };
-    setConversation((prevState) => [...prevState, message]);
-    setMessageEntered("");
+    });
     scrollToBottom();
+    sendToLex(messageEntered.trim());
+    setMessageEntered("");
+  };
+  const renderMessage = (message, type) => {
+    if (type === "user") return message;
+    if (type === "lex" && typeof message === "string") return message;
+    return JSON.stringify(message);
   };
 
   return (
@@ -53,7 +96,7 @@ function App() {
                   by === "lex" ? "chat-left" : "chat-right"
                 }`}
               >
-                <p>{message}</p>
+                <p>{renderMessage(message, by)}</p>
                 <sub>{dayjs(date).format("HH:mm a")}</sub>
               </div>
             ))}
