@@ -34,6 +34,7 @@
 .chat-messages {
   height: calc(80vh - 60px);
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 .chat-bubble {
@@ -41,17 +42,30 @@
   width: fit-content;
   max-width: 70%;
   margin: 0.1rem;
-  border-radius: 3rem;
+  border-radius: 2rem;
+  position: relative;
 }
 .chat-bubble.chat-left {
   background-color: var(--primary);
-  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   color: white;
 }
 .chat-bubble.chat-right {
   background-color: var(--lightgray);
   border-bottom-right-radius: 0;
   margin-left: auto;
+}
+.chat-bubble sub {
+  position: absolute;
+  color: rgb(79, 79, 79);
+  bottom: 3px;
+  font-size: 0.5rem;
+}
+.chat-bubble.chat-left sub {
+  right: -40px;
+}
+.chat-bubble.chat-right sub {
+  left: -40px;
 }
 
 .chat-form {
