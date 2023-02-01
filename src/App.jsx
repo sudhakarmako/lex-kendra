@@ -26,8 +26,10 @@ function App() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (!messageEntered) return null;
+
     const message = {
-      message: messageEntered,
+      message: messageEntered.trim(),
       by: "user",
       date: date.toISOString(),
     };
